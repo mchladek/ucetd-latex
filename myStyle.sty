@@ -1,0 +1,117 @@
+% Packages & Document info for dissertation.tex
+
+%% Use these commands to set biographic information for the title page:
+\title{Dissertation Title}
+\author{Author Name}
+\department{Department}
+\division{Division}
+\degree{Doctor of Philosophy}
+\date{June 2017}
+
+%% Use these commands to set a dedication and epigraph text
+\dedication{\emph{Dedicated to someone}}
+\epigraph{An important quote to highlight}
+
+% Allow for checking what latex engine is being used
+\usepackage{ifxetex,ifluatex}
+
+% Setup hyperlink support
+\usepackage{hyperref}
+\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
+\hypersetup{unicode=true,
+            pdfauthor=\@author,
+            pdftitle=\@title,
+            pdfsubject=subject1; subject2; subject3,
+            pdfkeywords=keyword1; keyword2; keyword3; keyword4; keyword5,
+            colorlinks=true,
+            citecolor=black,
+            urlcolor=black,
+            linkcolor=black,
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+
+% Setup support for tables that break across pages and allow for notes and
+% footnootes at bottom of table
+\usepackage{longtable,booktabs}
+\usepackage[referable]{threeparttablex}
+\renewcommand\TPTLnotename{NOTE}
+\renewcommand\TPTLsourcename{SOURCE}
+\renewcommand\TPTLnotesnamefontcommand{\footnotesize}
+\setTableNoteFont{\footnotesize}
+\renewcommand{\tnote}[1]{\protect\TPToverlap{\TPTtagStyle{#1}}} % don't put note mark in superscript
+\renewcommand{\TPTnoteLabel}[1]{\tnote{#1}\space} % reduce space from \hfil to \space between note mark and note text
+\renewcommand\TPTminimum{.9\textwidth}
+
+% Command added for pandoc's latex output
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=.6\maxwidth,height=\maxheight,keepaspectratio}
+
+% Set Fonts
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{libertine}
+    %\usepackage{fonts-tlwg} % include Thai fonts
+\else % if xetex or luatex
+    \usepackage{fontspec}
+    %\setmainfont{Liberation Serif}
+    \usepackage{libertine}
+    \newfontfamily\thaifonts{Noto Serif Thai}
+    \DeclareTextFontCommand{\thaitext}{\thaifonts} % wrap Thai in \thaitext{}
+\fi
+
+% Set languages
+\ifxetex
+    \usepackage{polyglossia}
+    \setmainlanguage[variant=american]{english}
+    \setotherlanguage{thai}
+    \addto\captionsenglish{\renewcommand{\bibname}{References}}
+    \addto\captionsenglish{\renewcommand{\contentsname}{Table of Contents}}
+\else % pdftex or luatex
+    \usepackage[thai,american]{babel}
+    \addto\captionsamerican{\renewcommand{\bibname}{References}}
+    \addto\captionsamerican{\renewcommand{\contentsname}{Table of Contents}}
+\fi
+
+% Packages Included in UChicago Template
+\usepackage{subfigure,epsfig,amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+% Set bibliography
+\usepackage[authordate,backend=biber]{biblatex-chicago}
+\addbibresource{bibliography.bib}
+
+\IfFileExists{microtype.sty}{%
+    \usepackage{microtype}
+}{}
+
+% Set section numbering depth
+\setcounter{secnumdepth}{3}
+
+% Set formatting of captions for figures and tables
+\usepackage[format=plain,labelsep=colon,font=doublespacing,width=.8\textwidth]{caption}
+
+% Make spacing in and around ellipses more akin to CMS
+\usepackage{xspace}
+\makeatletter
+\renewcommand\ldots[1]{\@ifnextchar{.}{.~.~.~}{.~.~.\@\xspace}}
+\makeatother
