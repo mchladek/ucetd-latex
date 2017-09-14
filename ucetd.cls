@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[1995/06/01]
-\ProvidesClass{ucetd}[2012/05/06 University of Chicago Electronic Theses and Dissertations]
+\ProvidesClass{ucetd}[2011/05/18 University of Chicago Electronic Theses and Dissertations]
 
 %%%%%%%%%%%%%%%%%%%%%%%%% Helper commands %%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -19,10 +19,11 @@
 }
 
 % Default copyright text
+\RequirePackage{ccicons}
 \newcommand{\etdCopyrightText}{
 	\null\vfill
-	\centerline{Copyright \copyright\ \number\year\ by \@author}
-	\centerline{All Rights Reserved}
+	\centerline{Copyright \textcopyright\ \number\year\ by \@author}
+	\center{Licensed under the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Public License \\ {\Large\ccbyncnd}}
 	\vskip 15pt\relax
 }
 
@@ -46,6 +47,7 @@
 	\clearpage
 	% Switch to arabic numbers on pages
 	\pagenumbering{arabic}
+	\etdDefaultSpacing
 }
 
 % Commands to follow the title page
@@ -57,6 +59,7 @@
 
 % UC ETD title page format
 \newcommand{\etdTitlePage} {
+	\pagenumbering{roman}
 	\begin{titlepage}
 		\begin{center}
 			\rule{0in}{0.55in} % Artificial extra [old=0.95in] margin. Why not vspace?
@@ -187,18 +190,18 @@
 % Begin an abstract or acknowledgements page
 \renewcommand{\abstract}{\etdFrontMatter{Abstract}}
 \newcommand{\acknowledgments}{\etdFrontMatter{Acknowledgments}}
+\newcommand{\noteonlanguage}{\etdFrontMatter{Note on Language}}
 
 % Start the main thesis body
 \newcommand{\mainmatter}{\etdMainMatter}
 
 % Bibliography
-% Change ft2,master,refs below to point to your library.bib files
 \newcommand{\makebibliography}{
 	\newpage
+	\phantomsection
 	\addcontentsline{toc}{chapter}{References}
 	\begin{singlespace}
-		\bibliography{ft2,master,refs}
-		\bibliographystyle{plain}
+        \printbibliography[title=References]
 	\end{singlespace}
 }
 
@@ -261,15 +264,15 @@
 \renewcommand\section{\@startsection {section}{1}{\z@}%
                                 {-3.5ex \@plus -1ex \@minus -.2ex}%
                                 {2.3ex \@plus.2ex}%
-                                {\normalfont\large\bfseries\centering}}
+                                {\normalfont\large\bfseries\raggedright}}
 \renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
                                 {-3.25ex\@plus -1ex \@minus -.2ex}%
                                 {1.5ex \@plus .2ex}%
-                                {\normalfont\large\itshape\centering}}
+                                {\normalfont\large\itshape\raggedright}}
 \renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
                                 {-3.25ex\@plus -1ex \@minus -.2ex}%
                                 {1.5ex \@plus .2ex}%
-                                {\normalfont\large}}
+                                {\normalfont\large\raggedright}}
 \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
                                 {3.25ex \@plus1ex \@minus.2ex}%
                                 {-1em}%
@@ -296,27 +299,27 @@
     \endgroup
   \fi}
 
-
-\renewcommand*\l@chapter[2]{%
-  \ifnum \c@tocdepth >\m@ne
-    \addpenalty{-\@highpenalty}%
-    \vskip 1.0em \@plus\p@
-    \setlength\@tempdima{1.5em}%
-    \begingroup
-      \parindent \z@ \rightskip \@pnumwidth
-      \parfillskip -\@pnumwidth
-      \leavevmode
-      \advance\leftskip\@tempdima
-      \hskip -\leftskip
-      \etdChapterHeadFormat{#1}\nobreak
+%% The following causes a \csname \endcsname error if used
+%\renewcommand*\l@chapter[2]{%
+%  \ifnum \c@tocdepth >\m@ne
+%    \addpenalty{-\@highpenalty}%
+%    \vskip 1.0em \@plus\p@
+%    \setlength\@tempdima{1.5em}%
+%    \begingroup
+%      \parindent \z@ \rightskip \@pnumwidth
+%      \parfillskip -\@pnumwidth
+%      \leavevmode
+%      \advance\leftskip\@tempdima
+%      \hskip -\leftskip
+%      \etdChapterHeadFormat{#1}\nobreak
 % CCW: The following 3 lines add dots to the chapter TOC listings
-      \leaders\hbox{$\m@th
-        \mkern \@dotsep mu\hbox{.}\mkern \@dotsep
-        mu$}\hfill
-      \hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
-      \penalty\@highpenalty
-    \endgroup
-  \fi}
+%      \leaders\hbox{$\m@th
+%        \mkern \@dotsep mu\hbox{.}\mkern \@dotsep
+%        mu$}\hfill
+%      \hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+%      \penalty\@highpenalty
+%    \endgroup
+%  \fi}
 
 % Add "CHAPTER"/"APPENDIX" headings to TOC before first of each.
 % If you want these words to be a bit bigger, remove "\normalsize" 
@@ -334,8 +337,8 @@
  
 % Change names of table of contents and bibliography
 
-\renewcommand{\contentsname}{Table of Contents}
-\renewcommand{\bibname}{References}
+%\renewcommand{\contentsname}{Table of Contents}
+%\renewcommand{\bibname}{References}
 
 % Change the margins to fit requirements
 
@@ -357,24 +360,34 @@
 %%%%%%
 
 % Main text box is the width/height of the paper minus 2in
-\setlength{\textwidth}{6.5in}
-\setlength{\textheight}{8.75in} % + footskip (0.25) = 9.00in
+%\setlength{\textwidth}{6.5in}
+%\setlength{\textheight}{9.0in}
 
 % Only the left and top margins can be defined
 % 1in is added to given values
-\setlength{\topmargin}{0.0in}
-\setlength{\evensidemargin}{0.0in}
-\setlength{\oddsidemargin}{0.0in}
+%\setlength{\topmargin}{0.0in}
+%\setlength{\evensidemargin}{0.0in}
+%\setlength{\oddsidemargin}{0.0in}
 
 % The top margin is also affected by the headhight and headsep
-\setlength{\headheight}{0.0in}
-\setlength{\headsep}{0.0in}
+%\setlength{\headheight}{0.0in}
+%\setlength{\headsep}{0.0in}
 
 % The bottom margin is also affected by the footskip
-% i.e. the length of the page has the following markers:
-% top of text at 1.00in, bottom of text at 9.75in,
-% page number at 10.00in, bottom of page at 11.00in
-\setlength{\footskip}{0.25in}
+%\setlength{\footskip}{0.25in}
+
+\RequirePackage[letterpaper]{geometry}
+\geometry{
+    textwidth=6.5in,
+    textheight=9.0in,
+    left=1in,
+    top=1in,
+    right=1in,
+    bottom=.75in,
+    headheight=0.0in,
+    headsep=0.0in,
+    footskip=0.25in,
+    includefoot}
 
 % Making sure absolutely nothing passes the right margin
 \setlength{\hfuzz}{0.0pt}
@@ -410,6 +423,7 @@
   \begin{singlespace}
     % This works b/c multiple \newpage's are treated as one
     \newpage
+    \phantomsection
     \addcontentsline{toc}{chapter}{List of Tables}
     \oldlistoftables 
   \end{singlespace}
@@ -421,6 +435,7 @@
   \begin{singlespace}
     % This works b/c multiple \newpage's are treated as one
     \newpage
+    \phantomsection
     \addcontentsline{toc}{chapter}{List of Figures}
     \oldlistoffigures 
   \end{singlespace}
